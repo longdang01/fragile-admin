@@ -90,7 +90,13 @@ const OrdersModal = (props) => {
       return Number(item.quantity) * Number(item.price) + acc;
     }, 0);
 
-    setOrders({ ...orders, paid: "", total: String(total) });
+    setOrders({
+      ...orders,
+      status: "",
+      payment: "",
+      paid: "",
+      total: String(total),
+    });
   };
 
   const onSave = async () => {
@@ -205,12 +211,12 @@ const OrdersModal = (props) => {
                 {product._id && (
                   <button
                     className="button btn bg-slate-400 w-full mt-2"
-                    title="Nhập Hàng"
+                    title="Bán Hàng"
                     onClick={() =>
                       props.handleShowOverlap(product, 0, [0, 1], 1)
                     }
                   >
-                    Nhập Hàng
+                    Bán Hàng
                   </button>
                 )}
               </div>

@@ -410,6 +410,44 @@ const collectionModalValidator = (data) => {
 
 const collectionImageModalValidator = (data) => {
   const schema = Joi.object().keys({
+    collectionInfo: Joi.string().required(),
+    picture: Joi.string().required(),
+  });
+
+  return schema
+    .messages({
+      //   "string.base": `"a" should be a type of 'text'`,
+      //   "string.min": `"a" should have a minimum length of {#limit}`,
+      "string.empty": `Không được để trống`,
+      "any.required": `Bắt buộc phải nhập`,
+    })
+    .validate(data, { abortEarly: false, allowUnknown: true });
+};
+
+const lookbookModalValidator = (data) => {
+  data.collectionInfo =
+    data.collectionInfo && data.collectionInfo._id
+      ? data.collectionInfo._id
+      : data.collectionInfo;
+  // }
+  const schema = Joi.object().keys({
+    lookbookName: Joi.string().required(),
+    collectionInfo: Joi.string().required(),
+  });
+
+  return schema
+    .messages({
+      //   "string.base": `"a" should be a type of 'text'`,
+      //   "string.min": `"a" should have a minimum length of {#limit}`,
+      "string.empty": `Không được để trống`,
+      "any.required": `Bắt buộc phải nhập`,
+    })
+    .validate(data, { abortEarly: false, allowUnknown: true });
+};
+
+const lookbookImageModalValidator = (data) => {
+  const schema = Joi.object().keys({
+    lookbook: Joi.string().required(),
     picture: Joi.string().required(),
   });
 
@@ -425,7 +463,21 @@ const collectionImageModalValidator = (data) => {
 
 const customerModalValidator = (data) => {
   const schema = Joi.object().keys({
-    user: Joi.string().required(),
+    username: Joi.string().required(),
+    password: Joi.string().min(3).required().messages({
+      "string.min": "Mật khẩu ít nhất 3 ký tự",
+      // "string.max": "Mật khẩu nhiều nhất 15 ký tự",
+    }),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .messages({
+        "string.email": "Email không hợp lệ",
+      }),
+    password_confirmation: Joi.string()
+      .equal(Joi.ref("password")) // not empty because this line
+      .label("password_confirmation")
+      .messages({ "any.only": "Nhập lại mật khẩu chưa chính xác" })
+      .required(),
     customerName: Joi.string().required(),
     phone: Joi.string().required(),
   });
@@ -441,10 +493,22 @@ const customerModalValidator = (data) => {
 };
 
 const staffModalValidator = (data) => {
+  data.role = String(data.role);
+
   const schema = Joi.object().keys({
-    user: Joi.string().required(),
+    username: Joi.string().required(),
+    password: Joi.string().min(3).required().messages({
+      "string.min": "Mật khẩu ít nhất 3 ký tự",
+      // "string.max": "Mật khẩu nhiều nhất 30 ký tự",
+    }),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .messages({
+        "string.email": "Email không hợp lệ",
+      }),
     staffName: Joi.string().required(),
     phone: Joi.string().required(),
+    role: Joi.string().required(),
   });
 
   return schema
@@ -493,4 +557,6 @@ export {
   customerModalValidator,
   staffModalValidator,
   userModalValidator,
+  lookbookModalValidator,
+  lookbookImageModalValidator,
 };

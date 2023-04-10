@@ -38,27 +38,27 @@ const Login = () => {
           const user = res.data.user;
 
           if (user.role == 1) {
-            localStorage.setItem("ADMIN", JSON.stringify(res.data.staff));
+            // localStorage.setItem("ADMIN", JSON.stringify(res.data.staff));
             localStorage.setItem("ROLE", 1);
-            localStorage.setItem("ADMIN_JWT_TOKEN", user.token);
+            // localStorage.setItem("ADMIN_JWT_TOKEN", user.token);
           }
 
           if (user.role == 2) {
-            localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
+            // localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
             localStorage.setItem("ROLE", 2);
-            localStorage.setItem("IMPORT_JWT_TOKEN", user.token);
+            // localStorage.setItem("IMPORT_JWT_TOKEN", user.token);
           }
 
           if (user.role == 3) {
-            localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
+            // localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
             localStorage.setItem("ROLE", 3);
-            localStorage.setItem("SALES_JWT_TOKEN", user.token);
+            // localStorage.setItem("SALES_JWT_TOKEN", user.token);
           }
 
           if (user.role == 4) {
-            localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
+            // localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
             localStorage.setItem("ROLE", 4);
-            localStorage.setItem("MEDIA_JWT_TOKEN", user.token);
+            // localStorage.setItem("MEDIA_JWT_TOKEN", user.token);
           }
 
           if (user.role == 5 && res.data.customer) {
@@ -70,6 +70,9 @@ const Login = () => {
               configToast
             );
           }
+
+          localStorage.setItem("TOKEN", user.token);
+          localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
 
           toast.success("Đăng nhập thành công !", configToast);
           navigate("/");

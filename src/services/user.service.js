@@ -5,10 +5,10 @@ const login = (data) => {
 };
 
 const register = (data) => {
-  return http.post(`/users/`, data);
+  return http.post(`/users/register`, data);
 };
 
-const getMe = (id) => {
+const getMe = () => {
   return http.get(`/users/me`);
 };
 

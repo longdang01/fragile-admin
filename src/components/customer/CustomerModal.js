@@ -6,7 +6,7 @@ import {
   configSlugify,
   configFullOptionSunEditor,
 } from "../../config/ConfigUI";
-
+import * as moment from "moment";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import SunEditor from "suneditor-react";
 
@@ -17,11 +17,16 @@ var slugify = require("slugify");
 const CustomerModal = (props) => {
   const initData = {
     _id: "",
+    user: "",
     customerName: "",
     picture: "",
     dob: "",
     address: "",
     phone: "",
+    email: "",
+    username: "",
+    password: "",
+    password_confirmation: "",
   };
 
   const initImage = { preview: "", raw: "" };
@@ -82,6 +87,8 @@ const CustomerModal = (props) => {
       setIsLoading(false);
     }
 
+    console.log(customer);
+    console.log(validate);
     if (!validate.error) {
       setIsLoading(true);
 
@@ -134,30 +141,183 @@ const CustomerModal = (props) => {
         isLoading={props.isLoading}
       >
         <div>
-          {/* <div className="g-col-12 form-group">
-            <label className="form-label italic">Tên thương hiệu (*)</label>
+          <div className="grid grid-cols-2 gap-5">
+            <div className="g-col-12 form-group">
+              <label className="form-label italic">Tên nhân viên (*)</label>
+              <input
+                type="text"
+                name="customerName"
+                className={
+                  "form-control shadow-lg " +
+                  (showError(errors, "customerName")
+                    ? "border-[#FF0000] focusError"
+                    : "border-[#cccccc]")
+                }
+                placeholder="Thể thao, Việc làm"
+                required
+                value={customer.customerName}
+                onChange={handleInput}
+                readOnly
+              />
+              <small className="text-red-600">
+                {showError(errors, "customerName") &&
+                  showError(errors, "customerName").messages.map(
+                    (message, index) => <div key={index}>&bull; {message}</div>
+                  )}
+              </small>
+            </div>
+            <div className="g-col-12 form-group">
+              <label className="form-label italic">Ngày sinh (*)</label>
+              <input
+                type="date"
+                name="dob"
+                className={
+                  "form-control shadow-lg " +
+                  (showError(errors, "dob")
+                    ? "border-[#FF0000] focusError"
+                    : "border-[#cccccc]")
+                }
+                placeholder="Thể thao, Việc làm"
+                required
+                value={moment(customer.dob).format("YYYY-MM-DD")}
+                onChange={handleInput}
+                readOnly
+              />
+              <small className="text-red-600">
+                {showError(errors, "dob") &&
+                  showError(errors, "dob").messages.map((message, index) => (
+                    <div key={index}>&bull; {message}</div>
+                  ))}
+              </small>
+            </div>
+
+            <div className="g-col-12 form-group">
+              <label className="form-label italic">Username (*)</label>
+              <input
+                type="text"
+                name="username"
+                className={
+                  "form-control shadow-lg " +
+                  (showError(errors, "username")
+                    ? "border-[#FF0000] focusError"
+                    : "border-[#cccccc]")
+                }
+                placeholder="Thể thao, Việc làm"
+                required
+                value={customer.username || ""}
+                onChange={handleInput}
+                disabled={action == 1}
+              />
+              <small className="text-red-600">
+                {showError(errors, "username") &&
+                  showError(errors, "username").messages.map(
+                    (message, index) => <div key={index}>&bull; {message}</div>
+                  )}
+              </small>
+            </div>
+            <div className="g-col-12 form-group">
+              <label className="form-label italic">Mật khẩu (*)</label>
+              <input
+                type="text"
+                name="password"
+                className={
+                  "form-control shadow-lg " +
+                  (showError(errors, "password")
+                    ? "border-[#FF0000] focusError"
+                    : "border-[#cccccc]")
+                }
+                placeholder="Thể thao, Việc làm"
+                required
+                value={
+                  action == 1
+                    ? "(mật khẩu không được hiển thị)"
+                    : customer.password
+                }
+                onChange={handleInput}
+                disabled={action == 1}
+              />
+              <small className="text-red-600">
+                {showError(errors, "password") &&
+                  showError(errors, "password").messages.map(
+                    (message, index) => <div key={index}>&bull; {message}</div>
+                  )}
+              </small>
+            </div>
+            <div className="g-col-12 form-group">
+              <label className="form-label italic">Email (*)</label>
+              <input
+                type="text"
+                name="email"
+                className={
+                  "form-control shadow-lg " +
+                  (showError(errors, "email")
+                    ? "border-[#FF0000] focusError"
+                    : "border-[#cccccc]")
+                }
+                placeholder="Thể thao, Việc làm"
+                required
+                value={customer.email || ""}
+                onChange={handleInput}
+                readOnly
+              />
+              <small className="text-red-600">
+                {showError(errors, "email") &&
+                  showError(errors, "email").messages.map((message, index) => (
+                    <div key={index}>&bull; {message}</div>
+                  ))}
+              </small>
+            </div>
+
+            <div className="g-col-12 form-group">
+              <label className="form-label italic">Số điện thoại (*)</label>
+              <input
+                type="text"
+                name="phone"
+                className={
+                  "form-control shadow-lg " +
+                  (showError(errors, "phone")
+                    ? "border-[#FF0000] focusError"
+                    : "border-[#cccccc]")
+                }
+                placeholder="Thể thao, Việc làm"
+                required
+                value={customer.phone}
+                onChange={handleInput}
+                readOnly
+              />
+              <small className="text-red-600">
+                {showError(errors, "phone") &&
+                  showError(errors, "phone").messages.map((message, index) => (
+                    <div key={index}>&bull; {message}</div>
+                  ))}
+              </small>
+            </div>
+          </div>
+
+          <div className="g-col-12 form-group">
+            <label className="form-label italic">Địa chỉ</label>
             <input
               type="text"
-              name="brandName"
+              name="address"
               className={
                 "form-control shadow-lg " +
-                (showError(errors, "brandName")
+                (showError(errors, "address")
                   ? "border-[#FF0000] focusError"
                   : "border-[#cccccc]")
               }
               placeholder="Thể thao, Việc làm"
               required
-              value={customer.brandName}
+              value={customer.address}
               onChange={handleInput}
+              readOnly
             />
             <small className="text-red-600">
-              {showError(errors, "brandName") &&
-                showError(errors, "brandName").messages.map(
-                  (message, index) => <div key={index}>&bull; {message}</div>
-                )}
+              {showError(errors, "address") &&
+                showError(errors, "address").messages.map((message, index) => (
+                  <div key={index}>&bull; {message}</div>
+                ))}
             </small>
           </div>
-
           <div className="g-col-12 form-group">
             <label className="form-label italic">Hình ảnh</label>
             <input
@@ -168,28 +328,27 @@ const CustomerModal = (props) => {
               value={customer.picture || "Chưa có hình ảnh"}
               readOnly
             />
+            {/* 
             <input
               type="file"
               accept="image/*"
               className="form-control form-image border-[#cccccc] shadow-lg mb-[8px]"
               onChange={handleImage}
               ref={ref}
-            />
+            /> */}
             {image.preview && (
               <div>
                 <img src={image.preview} alt="Thumb" className="mb-[8px]" />
-                <button
+                {/* <button
                   onClick={(e) => handleImageRemove(false)}
                   className="btn btn-secondary w-full"
                 >
                   Xóa hình ảnh
-                </button>
+                </button> */}
               </div>
             )}
             <small></small>
-          </div> */}
-
-          <div>Khách hàng </div>
+          </div>
         </div>
       </Modal>
     </>

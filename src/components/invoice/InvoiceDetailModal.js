@@ -41,8 +41,9 @@ const InvoiceDetailModal = (props) => {
   } = props;
   const [invoiceDetail, setInvoiceDetail] = useState(initData);
   const [invoiceDetails, setInvoiceDetails] = useState([]);
-  const [hex, setHex] = useState();
-  const [sizes, setSizes] = useState([]);
+  const [color, setColor] = useState();
+  // const [hex, setHex] = useState();
+  // const [sizes, setSizes] = useState([]);
   const [title, setTitle] = useState("");
 
   // validate
@@ -80,8 +81,9 @@ const InvoiceDetailModal = (props) => {
       // setColor(color);
       setInvoiceDetail({ ...invoiceDetail, color: color, size: "" });
       setLabelInputs(["color"]);
-      setHex(color.hex);
-      setSizes(color.sizes);
+      setColor(color);
+      // setHex(color.hex);
+      // setSizes(color.sizes);
     }
 
     if (obj == 2) {
@@ -195,6 +197,11 @@ const InvoiceDetailModal = (props) => {
 
   const onClose = async () => {
     // setIsLoading(true);
+    if (actionSub == 0) {
+      props.onClose();
+      setActionSub(-1);
+      return;
+    }
 
     const condProd =
       props.invoiceDetail.product && props.invoiceDetail.product._id
@@ -231,6 +238,7 @@ const InvoiceDetailModal = (props) => {
             item.size._id === props.invoiceDetail.size._id) ||
           item.size === props.invoiceDetail.size._id
       );
+
       invoiceDetails[index] = ivd;
     }
     setInvoiceDetails(invoiceDetails);
@@ -246,13 +254,14 @@ const InvoiceDetailModal = (props) => {
   }, [invoiceDetail]);
 
   useEffect(() => {
-    const optionsSize = getOptions(sizes, "sizeName");
+    const optionsSize = getOptions(color?.sizes, "sizeName");
     setOptionsSize(optionsSize);
 
     if (!invoiceDetail.color) {
       // setLabelInputs(["color", "size"]);
-      setSizes([]);
-      setHex();
+      // setSizes([]);
+      // setHex();
+      setColor();
       setInvoiceDetail({ ...invoiceDetail, size: "" });
     }
   }, [invoiceDetail.color]);
@@ -265,7 +274,8 @@ const InvoiceDetailModal = (props) => {
     // handleImageRemove(true);
     const optionsColor = getOptions(props.product.colors, "colorName");
     setOptionsColor(optionsColor);
-    setSizes([]);
+    // setSizes([]);
+    setColor();
     setTitle("Nhập Hàng");
     setErrors([]);
     setLabelInputs([]);
@@ -280,8 +290,9 @@ const InvoiceDetailModal = (props) => {
 
     if (actionSub == 1) {
       setInvoiceDetail(props.invoiceDetail);
-      setHex(props.invoiceDetail.color.hex);
-      setSizes(props.invoiceDetail.color.sizes);
+      setColor(props.invoiceDetail.color);
+      // setHex(props.invoiceDetail.color.hex);
+      // setSizes(props.invoiceDetail.color.sizes);
     }
     // if (
     //   actionSub == 1 &&
@@ -299,11 +310,11 @@ const InvoiceDetailModal = (props) => {
         onSave={onSave}
         title={title}
         actionSub={actionSub}
-        // onClose={onClose}
-        onClose={() => {
-          props.onClose();
-          setActionSub(-1);
-        }}
+        onClose={onClose}
+        // onClose={() => {
+        //   props.onClose();
+        //   setActionSub(-1);
+        // }}
         // onClose={
         //   () => {
         //     console.log("1", invoiceDetails);
@@ -368,7 +379,7 @@ const InvoiceDetailModal = (props) => {
                     <div
                       className="color-group__item ml-2"
                       style={{
-                        background: hex ? hex : "transparent",
+                        background: color?.hex ? color?.hex : "transparent",
                       }}
                     ></div>
                   </div>

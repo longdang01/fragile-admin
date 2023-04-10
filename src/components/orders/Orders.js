@@ -83,7 +83,6 @@ const Orders = () => {
 
     OrdersService.create(orders)
       .then((res) => {
-        console.log(res);
         setOrderses([res.data, ...orderses]);
         setIsLoading(false);
         setShow(false);

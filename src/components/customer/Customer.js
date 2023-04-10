@@ -31,6 +31,12 @@ const Customer = () => {
 
   const handleShow = async (action, show, id) => {
     const data = id ? await getCustomer(id) : {};
+    if (action == 1) {
+      data.username = data.user?.username;
+      data.password = data.user?.password;
+      data.password_confirmation = data.user?.password;
+      data.email = data.user?.email;
+    }
     setCustomer(data);
     setAction(action);
     setShow(show);
@@ -160,12 +166,12 @@ const Customer = () => {
       </h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <button
+          {/* <button
             className="btn btn-primary shadow-md mr-2"
             onClick={() => handleShow(0, true, "")}
           >
             <span className="capitalize">Thêm {TITLE_NAME}</span>
-          </button>
+          </button> */}
 
           <div className="hidden md:block mx-auto text-slate-500">
             {/* Hiển thị {customers.length} / {count} danh mục cha */}

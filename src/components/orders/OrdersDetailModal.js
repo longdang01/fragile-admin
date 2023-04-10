@@ -41,8 +41,11 @@ const OrdersDetailModal = (props) => {
   } = props;
   const [ordersDetail, setOrdersDetail] = useState(initData);
   const [ordersDetails, setOrdersDetails] = useState([]);
-  const [hex, setHex] = useState();
-  const [sizes, setSizes] = useState([]);
+  const [color, setColor] = useState();
+  const [size, setSize] = useState();
+  // const [discount, setDiscount] = useState();
+  // const [hex, setHex] = useState();
+  // const [sizes, setSizes] = useState([]);
   const [title, setTitle] = useState("");
 
   // validate
@@ -77,21 +80,29 @@ const OrdersDetailModal = (props) => {
 
     if (obj == 1) {
       const color = data ? await getColor(data) : "";
-      // setColor(color);
+      setColor(color);
       setOrdersDetail({
         ...ordersDetail,
         color: color,
         size: "",
-        price: color.price,
+        price: color.discount
+          ? color.discount.symbol == 1
+            ? Math.round(
+                Number(color.price) *
+                  ((100 - Number(color.discount.value)) / 100)
+              )
+            : Math.round(Number(color.price) - Number(color.discount.value))
+          : Number(color.price),
       });
+      // if (color.discount) setDiscount(color.discount);
       setLabelInputs(["color"]);
-      setHex(color.hex);
-      setSizes(color.sizes);
+      // setHex(color.hex);
+      // setSizes(color.sizes);
     }
 
     if (obj == 2) {
       const size = data ? await getSize(data) : "";
-      // setSize(size);
+      setSize(size);
       setOrdersDetail({ ...ordersDetail, size: size });
       setLabelInputs(["size"]);
     }
@@ -113,6 +124,10 @@ const OrdersDetailModal = (props) => {
   };
 
   const onSave = async () => {
+    if (size && ordersDetail.quantity > size.quantity) {
+      toast.error("Quá số lượng bán", configToast);
+      return;
+    }
     const validate = ordersDetailModalValidator(ordersDetail);
     if (validate.error) {
       const errors = getErrors(validate);
@@ -199,6 +214,11 @@ const OrdersDetailModal = (props) => {
 
   const onClose = async () => {
     // setIsLoading(true);
+    if (actionSub == 0) {
+      props.onClose();
+      setActionSub(-1);
+      return;
+    }
 
     const condProd =
       props.ordersDetail.product && props.ordersDetail.product._id
@@ -250,14 +270,16 @@ const OrdersDetailModal = (props) => {
   }, [ordersDetail]);
 
   useEffect(() => {
-    const optionsSize = getOptions(sizes, "sizeName");
+    const optionsSize = getOptions(color?.sizes, "sizeName");
     setOptionsSize(optionsSize);
 
     if (!ordersDetail.color) {
       // setLabelInputs(["color", "size"]);
-      setSizes([]);
-      setHex();
-      setOrdersDetail({ ...ordersDetail, size: "" });
+      // setSizes([]);
+      // setHex();
+      setColor();
+      setSize();
+      setOrdersDetail({ ...ordersDetail, price: "", size: "" });
     }
   }, [ordersDetail.color]);
 
@@ -269,7 +291,10 @@ const OrdersDetailModal = (props) => {
     // handleImageRemove(true);
     const optionsColor = getOptions(props.product.colors, "colorName");
     setOptionsColor(optionsColor);
-    setSizes([]);
+    // setSizes([]);
+    // setDiscount(null);
+    setColor();
+    setSize();
     setTitle("Bán Hàng");
     setErrors([]);
     setLabelInputs([]);
@@ -283,8 +308,10 @@ const OrdersDetailModal = (props) => {
 
     if (actionSub == 1) {
       setOrdersDetail(props.ordersDetail);
-      setHex(props.ordersDetail.color.hex);
-      setSizes(props.ordersDetail.color.sizes);
+      setColor(props.ordersDetail.color);
+      setSize(props.ordersDetail.size);
+      // setHex(props.ordersDetail.color.hex);
+      // setSizes(props.ordersDetail.color.sizes);
     }
     // if (
     //   actionSub == 1 &&
@@ -302,11 +329,11 @@ const OrdersDetailModal = (props) => {
         onSave={onSave}
         title={title}
         actionSub={actionSub}
-        // onClose={onClose}
-        onClose={() => {
-          props.onClose();
-          setActionSub(-1);
-        }}
+        onClose={onClose}
+        // onClose={() => {
+        //   props.onClose();
+        //   setActionSub(-1);
+        // }}
         // onClose={
         //   () => {
         //     console.log("1", ordersDetails);
@@ -371,7 +398,7 @@ const OrdersDetailModal = (props) => {
                     <div
                       className="color-group__item ml-2"
                       style={{
-                        background: hex ? hex : "transparent",
+                        background: color?.hex ? color?.hex : "transparent",
                       }}
                     ></div>
                   </div>
@@ -426,7 +453,10 @@ const OrdersDetailModal = (props) => {
               </div>
               <div className="grid grid-cols-2 gap-5">
                 <div className="g-col-12 form-group">
-                  <label className="form-label italic">Số Lượng (*)</label>
+                  <label className="form-label italic">
+                    Số Lượng (*)
+                    {size && " (còn " + size.quantity + " số lượng)"}
+                  </label>
                   <input
                     type="text"
                     name="quantity"
@@ -451,7 +481,14 @@ const OrdersDetailModal = (props) => {
                   </small>
                 </div>
                 <div className="g-col-12 form-group">
-                  <label className="form-label italic">Giá Bán (*)</label>
+                  <label className="form-label italic">
+                    Giá Bán (*)
+                    {color?.discount &&
+                      ` (giảm giá ${
+                        color?.discount.value +
+                        (color?.discount.symbol == 1 ? "%" : "K")
+                      })`}
+                  </label>
                   <input
                     type="text"
                     name="price"
@@ -463,7 +500,7 @@ const OrdersDetailModal = (props) => {
                     }
                     placeholder="/the-thao, /viec-lam"
                     required
-                    value={ordersDetail.price}
+                    value={ordersDetail.price ? ordersDetail.price : ""}
                     onChange={(e) => handleInput(e, "", 2)}
                     readOnly
                   />

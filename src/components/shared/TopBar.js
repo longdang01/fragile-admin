@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AccountMenu from "./AccountMenu";
 import Notification from "./Notification";
 
-const TopBar = () => {
+const TopBar = ({ staff }) => {
   const [toggleNotification, setToggleNotification] = useState(false);
   const [toggleAccountMenu, setToggleAccountMenu] = useState(false);
 
@@ -194,7 +194,7 @@ const TopBar = () => {
           <Notification />
           {/* <!-- END: Notifications */}
           {/* <!-- BEGIN: Account Menu */}
-          <AccountMenu />
+          <AccountMenu staff={staff} />
           {/* <!-- END: Account Menu */}
         </div>
       </div>

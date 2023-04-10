@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { menus } from "../../common/Menu";
 
-const SideBar = () => {
+const SideBar = ({ staff }) => {
   const { pathname } = useLocation();
 
   const toggleSideMenu = (e, sub) => {
@@ -89,89 +89,93 @@ const SideBar = () => {
 
   return (
     <>
-      <nav className="side-nav">
-        <ul>
-          {menus.map((menu, index) => {
-            return (
-              <li key={index}>
-                <NavLink
-                  to={menu.to}
-                  className={
-                    menu.subMenus.map((item) => item.to).includes(pathname) ||
-                    [menu.to].includes(pathname)
-                      ? `side-menu side-menu--active`
-                      : `side-menu`
-                  }
-                  onClick={(e) =>
-                    menu.subMenus.length > 0 ? toggleSideMenu(e) : null
-                  }
-                >
-                  <div className="side-menu__icon">
-                    <i className={menu.icon}></i>
-                  </div>
-                  <div className="side-menu__title">
-                    {menu.name}
-                    {menu.subMenus.length > 0 && (
-                      <div
-                        className={
-                          "side-menu__sub-icon transform " +
-                          (menu.subMenus
-                            .map((item) => item.to)
-                            .includes(pathname)
-                            ? "rotate-180"
-                            : "")
-                        }
-                      >
-                        <i className="fa-solid fa-chevron-down"></i>
+      {staff && (
+        <nav className="side-nav">
+          <ul>
+            {menus.map(
+              (menu, index) =>
+                menu.roles.includes(staff.user.role) && (
+                  <li key={index}>
+                    <NavLink
+                      to={menu.to}
+                      className={
+                        menu.subMenus
+                          .map((item) => item.to)
+                          .includes(pathname) || [menu.to].includes(pathname)
+                          ? `side-menu side-menu--active`
+                          : `side-menu`
+                      }
+                      onClick={(e) =>
+                        menu.subMenus.length > 0 ? toggleSideMenu(e) : null
+                      }
+                    >
+                      <div className="side-menu__icon">
+                        <i className={menu.icon}></i>
                       </div>
-                    )}
-                  </div>
-                </NavLink>
-                {/* side-menu__sub-open */}
-                <ul
-                  className={
-                    "transition-height " +
-                    (menu.subMenus.map((item) => item.to).includes(pathname)
-                      ? `side-menu__sub-open ${pathname.substring(1)}`
-                      : "")
-                  }
-                  // style={{
-                  //   height:
-                  //     menu.subMenus.map((item) => item.to).includes(pathname) ||
-                  //     [menu.to].includes(pathname)
-                  //       ? subMenuHeight.current
-                  //       : "0px",
-                  // }}
-                >
-                  {menu.subMenus &&
-                    menu.subMenus.map((subMenu, index) => {
-                      return (
-                        <li key={index}>
-                          <NavLink
-                            to={subMenu.to}
-                            className={({ isActive }) =>
-                              isActive
-                                ? "side-menu side-menu--active"
-                                : "side-menu "
+                      <div className="side-menu__title">
+                        {menu.name}
+                        {menu.subMenus.length > 0 && (
+                          <div
+                            className={
+                              "side-menu__sub-icon transform " +
+                              (menu.subMenus
+                                .map((item) => item.to)
+                                .includes(pathname)
+                                ? "rotate-180"
+                                : "")
                             }
                           >
-                            <div className="side-menu__icon">
-                              <i className={subMenu.icon}></i>
-                            </div>
-                            <div className="side-menu__title">
-                              {subMenu.name}
-                            </div>
-                          </NavLink>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </li>
-            );
-          })}
-          <li className="side-nav__devider my-6"></li>
-        </ul>
-      </nav>
+                            <i className="fa-solid fa-chevron-down"></i>
+                          </div>
+                        )}
+                      </div>
+                    </NavLink>
+                    {/* side-menu__sub-open */}
+                    <ul
+                      className={
+                        "transition-height " +
+                        (menu.subMenus.map((item) => item.to).includes(pathname)
+                          ? `side-menu__sub-open ${pathname.substring(1)}`
+                          : "")
+                      }
+                      // style={{
+                      //   height:
+                      //     menu.subMenus.map((item) => item.to).includes(pathname) ||
+                      //     [menu.to].includes(pathname)
+                      //       ? subMenuHeight.current
+                      //       : "0px",
+                      // }}
+                    >
+                      {menu.subMenus &&
+                        menu.subMenus.map((subMenu, index) => {
+                          return (
+                            <li key={index}>
+                              <NavLink
+                                to={subMenu.to}
+                                className={({ isActive }) =>
+                                  isActive
+                                    ? "side-menu side-menu--active"
+                                    : "side-menu "
+                                }
+                              >
+                                <div className="side-menu__icon">
+                                  <i className={subMenu.icon}></i>
+                                </div>
+                                <div className="side-menu__title">
+                                  {subMenu.name}
+                                </div>
+                              </NavLink>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </li>
+                )
+            )}
+            <li className="side-nav__devider my-6"></li>
+          </ul>
+        </nav>
+      )}
     </>
   );
 };

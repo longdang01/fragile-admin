@@ -24,12 +24,13 @@ import SizeService from "../../services/size.service";
 var slugify = require("slugify");
 
 const InvoiceModal = (props) => {
-  const ADMIN_INFO = JSON.parse(localStorage.getItem("ADMIN"));
+  // const ADMIN_INFO = JSON.parse(localStorage.getItem("ADMIN"));
   const STAFF_INFO = JSON.parse(localStorage.getItem("STAFF"));
 
   const initData = {
     _id: "",
-    staff: ADMIN_INFO ? ADMIN_INFO._id : STAFF_INFO._id,
+    // staff: ADMIN_INFO ? ADMIN_INFO._id : STAFF_INFO._id,
+    staff: STAFF_INFO._id,
     invoiceCode: "",
     note: "",
     total: "",
@@ -127,7 +128,8 @@ const InvoiceModal = (props) => {
     handleImageRemove(true);
     setLabelInputs([]);
     setErrors([]);
-    setStaff(ADMIN_INFO ? ADMIN_INFO : STAFF_INFO);
+    // setStaff(ADMIN_INFO ? ADMIN_INFO : STAFF_INFO);
+    setStaff(STAFF_INFO);
 
     if (action == 1 && props.invoice._id) {
       setInvoice(props.invoice);

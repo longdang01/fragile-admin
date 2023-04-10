@@ -6,6 +6,7 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import StaffTable from "./StaffTable";
 import StaffModal from "./StaffModal";
 import StaffService from "../../services/staff.service";
+import UserService from "../../services/user.service";
 import ConfirmDialog from "../shared/ConfirmDialog";
 
 const TITLE = "Quản Lý Nhân Viên";
@@ -31,6 +32,13 @@ const Staff = () => {
 
   const handleShow = async (action, show, id) => {
     const data = id ? await getStaff(id) : {};
+    if (action == 1) {
+      data.username = data.user?.username;
+      data.password = data.user?.password;
+      data.email = data.user?.email;
+
+      data.role = data.user?.role;
+    }
     setStaff(data);
     setAction(action);
     setShow(show);
@@ -59,9 +67,9 @@ const Staff = () => {
   };
 
   const createStaff = (staff) => {
-    StaffService.create(staff)
+    UserService.register(staff)
       .then((res) => {
-        setStaffs([...staffs, res.data]);
+        setStaffs([...staffs, res.data.staff]);
         // setCount(count + 1);
         setIsLoading(false);
         setShow(false);

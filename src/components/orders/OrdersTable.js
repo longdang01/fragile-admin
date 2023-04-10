@@ -2,6 +2,11 @@ import { useState, useMemo } from "react";
 import { PAGE_SIZE } from "../../common/Variable";
 import Pagination from "../../utils/pagination/Pagination";
 import * as moment from "moment";
+import {
+  ORDERS_STATUSES,
+  ORDERS_PAYMENTS,
+  ORDERS_PAIDS,
+} from "../../common/Variable";
 const OrdersTable = (props) => {
   const {
     orderses,
@@ -34,7 +39,8 @@ const OrdersTable = (props) => {
               </th>
               <th className="whitespace-nowrap capitalize ">Mã Đơn Bán</th>
               <th className="whitespace-nowrap capitalize ">Ngày Bán</th>
-              <th className="whitespace-nowrap capitalize ">Trạng Thái</th>
+              <th className="whitespace-nowrap capitalize ">Trạng thái</th>
+              {/* <th className="whitespace-nowrap capitalize ">Thanh toán</th> */}
               <th className="text-center whitespace-nowrap capitalize w-56">
                 Tác Vụ
               </th>
@@ -61,11 +67,26 @@ const OrdersTable = (props) => {
                     </div> */}
                   </td>
                   <td>{moment(orders.createdAt).format("DD/MM/YYYY")}</td>
-                  <td>
+                  {/* <td>
                     {orders.paid == 1 ? (
                       <div className="text-green-600">(đã thanh toán)</div>
                     ) : (
                       <div className="text-danger">(chưa thanh toán)</div>
+                    )}
+                  </td> */}
+                  <td>
+                    {ORDERS_STATUSES.map(
+                      (status, index) =>
+                        status.value == orders.status && (
+                          <div
+                            key={index}
+                            style={{
+                              color: status.color,
+                            }}
+                          >
+                            ({status.label})
+                          </div>
+                        )
                     )}
                   </td>
                   <td className="table-report__action w-56">
@@ -77,15 +98,17 @@ const OrdersTable = (props) => {
                       >
                         <i className="uil uil-edit"></i>
                       </a>
-                      <a
-                        className="flex items-center text-danger"
-                        href={undefined}
-                        data-tw-toggle="modal"
-                        data-tw-target="#delete-confirmation-modal"
-                        onClick={() => deleteOrders(orders._id)}
-                      >
-                        <i className="uil uil-trash"></i>
-                      </a>
+                      {orders.status == 6 && (
+                        <a
+                          className="flex items-center text-danger"
+                          href={undefined}
+                          data-tw-toggle="modal"
+                          data-tw-target="#delete-confirmation-modal"
+                          onClick={() => deleteOrders(orders._id)}
+                        >
+                          <i className="uil uil-trash"></i>
+                        </a>
+                      )}
                     </div>
                   </td>
                 </tr>

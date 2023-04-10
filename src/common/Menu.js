@@ -5,6 +5,7 @@ const menus = [
     to: "/dashboard",
     icon: "uil uil-estate",
     subMenus: [],
+    roles: [1, 2, 3, 4],
   },
   {
     id: 2,
@@ -55,6 +56,7 @@ const menus = [
         icon: "uil uil-heart-rate",
       },
     ],
+    roles: [1, 2],
   },
   {
     id: 3,
@@ -75,6 +77,7 @@ const menus = [
         icon: "uil uil-heart-rate",
       },
     ],
+    roles: [1, 3],
   },
   {
     id: 4,
@@ -89,6 +92,7 @@ const menus = [
         icon: "uil uil-heart-rate",
       },
     ],
+    roles: [1],
   },
   {
     id: 5,
@@ -102,7 +106,14 @@ const menus = [
         to: "/slide",
         icon: "uil uil-heart-rate",
       },
+      {
+        id: 2,
+        name: "Lookbook",
+        to: "/lookbook",
+        icon: "uil uil-heart-rate",
+      },
     ],
+    roles: [1, 4],
   },
 ];
 
