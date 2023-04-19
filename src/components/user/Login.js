@@ -33,7 +33,7 @@ const Login = () => {
     }
 
     if (!validate.error) {
-      UserService.login(user)
+      UserService.login({ user, page: 1 })
         .then((res) => {
           const user = res.data.user;
 
@@ -61,15 +61,16 @@ const Login = () => {
             // localStorage.setItem("MEDIA_JWT_TOKEN", user.token);
           }
 
-          if (user.role == 5 && res.data.customer) {
-            // localStorage.setItem("CUSTOMER_TOKEN", user.token);
-            // localStorage.setItem("CUSTOMER", JSON.stringify(res.data.customer));
-            // localStorage.setItem("ROLE", 5);
-            toast.error(
-              "Bạn không có quyền truy cập vào trang quản trị",
-              configToast
-            );
-          }
+          // if (user.role == 5 && res.data.customer) {
+          //   // localStorage.setItem("CUSTOMER_TOKEN", user.token);
+          //   // localStorage.setItem("CUSTOMER", JSON.stringify(res.data.customer));
+          //   // localStorage.setItem("ROLE", 5);
+          //   toast.error(
+          //     "Bạn không có quyền truy cập vào trang quản trị",
+          //     configToast
+          //   );
+          //   return;
+          // }
 
           localStorage.setItem("TOKEN", user.token);
           localStorage.setItem("STAFF", JSON.stringify(res.data.staff));
@@ -143,6 +144,7 @@ const Login = () => {
                       }
                       placeholder="Username"
                       onChange={handleInput}
+                      value={user.username}
                     />
                     <small className="text-red-600">
                       {showError(errors, "username") &&
@@ -166,6 +168,7 @@ const Login = () => {
                       }
                       placeholder="Password"
                       onChange={handleInput}
+                      value={user.password}
                     />
                     <small className="text-red-600">
                       {showError(errors, "password") &&

@@ -134,7 +134,7 @@ const SlideModal = (props) => {
       >
         <div>
           <div className="g-col-12 form-group">
-            <label className="form-label italic">Tên Slide (*)</label>
+            <label className="form-label italic">Tên Slide</label>
             <input
               type="text"
               name="slideName"

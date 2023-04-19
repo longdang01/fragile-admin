@@ -120,7 +120,9 @@ const SubCategory = () => {
           <link rel="icon" href="/favicon.ico" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#000000" />
-          <title>{TITLE + " / Fragile - Blog, News and Magazine"}</title>
+          <title>
+            {TITLE + " / Fragile - Thương Hiệu Thời Trang Việt Nam"}
+          </title>
         </Helmet>
       </HelmetProvider>
 

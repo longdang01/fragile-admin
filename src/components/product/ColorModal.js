@@ -115,7 +115,7 @@ const ColorModal = (props) => {
 
   // catch after event remove
   useEffect(() => {
-    if (!isChange) {
+    if (!isChange && JSON.stringify(props.showType) === JSON.stringify([1])) {
       handleImageRemove(true);
     }
   }, [isChange, props.isLoading]);

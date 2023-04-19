@@ -9,7 +9,6 @@
 import { Navigate } from "react-router-dom";
 
 const RolesAuthRoute = ({ children, roles }) => {
-  const userRoles = [1, 2, 3, 4];
   const role = Number(localStorage.getItem("ROLE"));
 
   const canAccess = roles.includes(role);

@@ -58,7 +58,7 @@ const SlideTable = (props) => {
                 </td>
                 <td>
                   <a href={undefined} className="font-medium whitespace-nowrap">
-                    {slide.slideName}
+                    {slide.slideName || "(chưa có tên slide)"}
                   </a>
                   {/* <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                     Photography

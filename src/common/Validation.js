@@ -334,7 +334,7 @@ const subCategoryModalValidator = (data) => {
 
 const slideModalValidator = (data) => {
   const schema = Joi.object().keys({
-    slideName: Joi.string().required(),
+    // slideName: Joi.string().required(),
     picture: Joi.string().required(),
   });
 
