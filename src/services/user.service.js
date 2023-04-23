@@ -7,6 +7,9 @@ const login = (data) => {
 const register = (data) => {
   return http.post(`/users/register`, data);
 };
+const refreshToken = (data) => {
+  return http.post(`/users/refresh-token`, data);
+};
 
 const getMe = () => {
   return http.get(`/users/me`);
@@ -15,6 +18,7 @@ const getMe = () => {
 const UserService = {
   login,
   register,
+  refreshToken,
   getMe,
 };
 

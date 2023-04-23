@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { TOAST_MESSAGE, PAGE_SIZE } from "../common/Variable";
 import { configToast } from "../config/ConfigUI";
+import jwt_decode from "jwt-decode";
 
 const AuthGuard = ({ children }) => {
   let navigate = useNavigate();
@@ -31,7 +32,15 @@ const AuthGuard = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (staff == -1 || !hasToken || !hasStaff || !hasRole) {
+    const decoded = hasToken && jwt_decode(hasToken);
+
+    if (
+      staff == -1 ||
+      !hasToken ||
+      !hasStaff ||
+      !hasRole ||
+      (decoded && decoded.exp < Date.now() / 1000)
+    ) {
       navigate("/login");
     }
   }, [staff]);
