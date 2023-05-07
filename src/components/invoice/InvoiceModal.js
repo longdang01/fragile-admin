@@ -33,6 +33,7 @@ const InvoiceModal = (props) => {
     staff: STAFF_INFO._id,
     invoiceCode: "",
     note: "",
+    transportFee: "",
     total: "",
     paid: "",
   };
@@ -87,7 +88,12 @@ const InvoiceModal = (props) => {
       return Number(item.quantity) * Number(item.priceImport) + acc;
     }, 0);
 
-    setInvoice({ ...invoice, paid: "", total: String(total) });
+    setInvoice({
+      ...invoice,
+      paid: "",
+      transportFee: "",
+      total: String(total),
+    });
   };
 
   const onSave = async () => {
@@ -355,6 +361,47 @@ const InvoiceModal = (props) => {
                   placeholder="Thể thao, Việc làm"
                   required
                   value={Number(invoice.total).toLocaleString() + " VND"}
+                  readOnly
+                />
+              </div>
+              <div className="g-col-12 form-group">
+                <label className="form-label italic">Phí vận chuyển (*)</label>
+                <input
+                  type="text"
+                  name="transportFee"
+                  className={
+                    "form-control shadow-lg " +
+                    (showError(errors, "transportFee")
+                      ? "border-[#FF0000] focusError"
+                      : "border-[#cccccc]")
+                  }
+                  placeholder="Mức phí vận chuyển?"
+                  required
+                  value={invoice.transportFee}
+                  onChange={handleInput}
+                />
+                <small className="text-red-600">
+                  {showError(errors, "transportFee") &&
+                    showError(errors, "transportFee").messages.map(
+                      (message, index) => (
+                        <div key={index}>&bull; {message}</div>
+                      )
+                    )}
+                </small>
+              </div>
+              <div className="g-col-12 form-group">
+                <label className="form-label italic">Thành tiền (*)</label>
+                <input
+                  type="text"
+                  name="transportFee"
+                  className={"form-control shadow-lg "}
+                  placeholder="Thể thao, Việc làm"
+                  required
+                  value={
+                    (
+                      Number(invoice.total) + Number(invoice.transportFee)
+                    ).toLocaleString() + " VND"
+                  }
                   readOnly
                 />
               </div>

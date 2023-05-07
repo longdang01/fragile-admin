@@ -35,6 +35,7 @@ const OrdersModal = (props) => {
     deliveryAddress: "",
     ordersCode: "",
     note: "",
+    transportFee: "",
     total: "",
     status: "",
     payment: "",
@@ -95,6 +96,7 @@ const OrdersModal = (props) => {
       status: "",
       payment: "",
       paid: "",
+      transportFee: "",
       total: String(total),
     });
   };
@@ -357,6 +359,47 @@ const OrdersModal = (props) => {
                   placeholder="Thể thao, Việc làm"
                   required
                   value={Number(orders.total).toLocaleString() + " VND"}
+                  readOnly
+                />
+              </div>
+              <div className="g-col-12 form-group">
+                <label className="form-label italic">Phí vận chuyển (*)</label>
+                <input
+                  type="text"
+                  name="transportFee"
+                  className={
+                    "form-control shadow-lg " +
+                    (showError(errors, "transportFee")
+                      ? "border-[#FF0000] focusError"
+                      : "border-[#cccccc]")
+                  }
+                  placeholder="Mức phí vận chuyển"
+                  required
+                  value={orders.transportFee}
+                  onChange={handleInput}
+                />
+                <small className="text-red-600">
+                  {showError(errors, "transportFee") &&
+                    showError(errors, "transportFee").messages.map(
+                      (message, index) => (
+                        <div key={index}>&bull; {message}</div>
+                      )
+                    )}
+                </small>
+              </div>
+              <div className="g-col-12 form-group">
+                <label className="form-label italic">Thành tiền (*)</label>
+                <input
+                  type="text"
+                  name="total"
+                  className={"form-control shadow-lg "}
+                  placeholder="Thể thao, Việc làm"
+                  required
+                  value={
+                    (
+                      Number(orders.total) + Number(orders.transportFee)
+                    ).toLocaleString() + " VND"
+                  }
                   readOnly
                 />
               </div>

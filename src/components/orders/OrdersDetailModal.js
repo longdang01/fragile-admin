@@ -393,6 +393,7 @@ const OrdersDetailModal = (props) => {
                         })}
                         isSearchable={true}
                         isClearable={true}
+                        isDisabled={actionSub == 1 ? true : false}
                       />
                     </div>
                     <div
@@ -440,6 +441,7 @@ const OrdersDetailModal = (props) => {
                     })}
                     isSearchable={true}
                     isClearable={true}
+                    isDisabled={actionSub == 1 ? true : false}
                   />
                   <small className="text-red-600">
                     {showError(errors, "size") &&

@@ -152,6 +152,8 @@ const InvoiceDetailModal = (props) => {
             item.size === invoiceDetail.size._id
         );
 
+      // console.log("sub", actionSub);
+      // console.log("check", actionSub);
       if (actionSub == 0) {
         if (check) {
           toast.error("Phân loại hàng đã có trong giỏ nhập", configToast);
@@ -166,6 +168,12 @@ const InvoiceDetailModal = (props) => {
       }
 
       if (actionSub == 1) {
+        // if (check) {
+        //   toast.error("Phân loại hàng đã có trong giỏ nhập", configToast);
+        //   setIsLoading(false);
+        // }
+
+        // if (!check) {
         const index =
           invoiceDetails.length > 0 &&
           invoiceDetails.findIndex(
@@ -187,8 +195,11 @@ const InvoiceDetailModal = (props) => {
           size: size,
         };
 
+        console.log("ivd", ivd);
+
         invoiceDetails[index] = ivd;
         setInvoiceDetails(invoiceDetails);
+        // }
       }
 
       saveInvoiceDetail(invoiceDetails);
@@ -374,6 +385,7 @@ const InvoiceDetailModal = (props) => {
                         })}
                         isSearchable={true}
                         isClearable={true}
+                        isDisabled={actionSub == 1 ? true : false}
                       />
                     </div>
                     <div
@@ -421,6 +433,9 @@ const InvoiceDetailModal = (props) => {
                     })}
                     isSearchable={true}
                     isClearable={true}
+                    // isSearchable={actionSub == 0 ? true : false}
+                    // isClearable={actionSub == 0 ? true : false}
+                    isDisabled={actionSub == 1 ? true : false}
                   />
                   <small className="text-red-600">
                     {showError(errors, "size") &&

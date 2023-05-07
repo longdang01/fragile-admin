@@ -135,9 +135,17 @@ const discountModalValidator = (data) => {
 const invoiceModalValidator = (data) => {
   data.paid = String(data.paid);
   data.total = String(data.total);
+  data.transportFee = String(data.transportFee);
 
   const schema = Joi.object().keys({
     staff: Joi.string().required(),
+    transportFee: Joi.string()
+      .required()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.pattern.base": "Là các ký tự số",
+      }),
     total: Joi.string()
       .required()
       .pattern(/^[0-9]+$/)
@@ -204,12 +212,20 @@ const invoiceDetailModalValidator = (data) => {
 };
 
 const ordersModalValidator = (data) => {
+  data.transportFee = String(data.transportFee);
   data.total = String(data.total);
   data.status = String(data.status);
   data.payment = String(data.payment);
   data.paid = String(data.paid);
 
   const schema = Joi.object().keys({
+    transportFee: Joi.string()
+      .required()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.pattern.base": "Là các ký tự số",
+      }),
     total: Joi.string()
       .required()
       .pattern(/^[0-9]+$/)
