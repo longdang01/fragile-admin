@@ -133,7 +133,6 @@ select {
   transform: translate(0, 51px) !important;
 }
 
-// css here
 @-webkit-keyframes SHOW-BOX {
   0% {
     opacity: 0;

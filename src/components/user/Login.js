@@ -126,6 +126,10 @@ const Login = () => {
                 <h2 className="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
                   Đăng Nhập
                 </h2>
+                <p className="text-left italic mt-3">
+                  Tài khoản để test: username: admin@longdang01, password:
+                  adminpassword@longdang01
+                </p>
                 <div className="intro-x mt-2 text-slate-400 xl:hidden text-center">
                   {/* A few more clicks to sign in to your account. Manage all your
                   e-commerce accounts in one place */}
@@ -210,16 +214,19 @@ const Login = () => {
                     Đăng Ký
                   </Link> */}
                 </div>
+
                 {/* <div className="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left">
-                  By signin up, you agree to our{" "}
+                  Tài khoản để test: username: admin@longdang01, password:
+                  adminpassword@longdang01
+                </div> */}
+                {/* By signin up, you agree to our{" "}
                   <a className="text-primary dark:text-slate-200" href="">
                     Terms and Conditions
                   </a>{" "}
                   &amp;{" "}
                   <a className="text-primary dark:text-slate-200" href="">
                     Privacy Policy
-                  </a>
-                </div> */}
+                  </a> */}
               </div>
             </div>
             {/* <!-- END: Login Form --> */}
