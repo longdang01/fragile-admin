@@ -87,8 +87,6 @@ const CustomerModal = (props) => {
       setIsLoading(false);
     }
 
-    console.log(customer);
-    console.log(validate);
     if (!validate.error) {
       setIsLoading(true);
 

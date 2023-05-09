@@ -185,7 +185,6 @@ const Product = () => {
     // setIsDeleted(true);
     ColorService.remove(itemDelete)
       .then((res) => {
-        console.log("delete color");
         product.colors = product.colors.filter(
           (item) => item._id !== itemDelete
         );
@@ -401,7 +400,9 @@ const Product = () => {
           <link rel="icon" href="/favicon.ico" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#000000" />
-          <title>{TITLE + " / Fragile - Thương Hiệu Thời Trang Việt Nam"}</title>
+          <title>
+            {TITLE + " / Fragile - Thương Hiệu Thời Trang Việt Nam"}
+          </title>
         </Helmet>
       </HelmetProvider>
 

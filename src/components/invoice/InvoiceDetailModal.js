@@ -195,8 +195,6 @@ const InvoiceDetailModal = (props) => {
           size: size,
         };
 
-        console.log("ivd", ivd);
-
         invoiceDetails[index] = ivd;
         setInvoiceDetails(invoiceDetails);
         // }
