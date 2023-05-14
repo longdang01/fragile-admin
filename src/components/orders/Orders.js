@@ -79,8 +79,6 @@ const Orders = () => {
   };
 
   const createOrders = (orders) => {
-    setIsLoading(false);
-
     OrdersService.create(orders)
       .then((res) => {
         setOrderses([res.data, ...orderses]);

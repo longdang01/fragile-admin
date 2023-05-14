@@ -20,6 +20,7 @@ import UploadService from "../../services/upload.service";
 import ProductService from "../../services/product.service";
 import ColorService from "../../services/color.service";
 import SizeService from "../../services/size.service";
+import InvoiceService from "../../services/invoice.service";
 
 var slugify = require("slugify");
 
@@ -49,7 +50,10 @@ const InvoiceModal = (props) => {
     deleteInvoiceDetail,
     setIsLoading,
   } = props;
+
   const [invoice, setInvoice] = useState(initData);
+  const [statusListInvoice, setStatusListInvoice] = useState(false);
+  const [listInvoice, setListInvoice] = useState([]);
   const [staff, setStaff] = useState();
   // const [note, setNote] = useState();
   // const [invoiceDetails, setInvoiceDetails] = useState(initData);
@@ -140,11 +144,23 @@ const InvoiceModal = (props) => {
     if (action == 1 && props.invoice._id) {
       setInvoice(props.invoice);
       setTitle("Cập Nhật Đơn Nhập");
+      //
+      // setStatusListInvoice(true);
+      InvoiceService.getById(props.invoice._id)
+        .then((res) => {
+          // console.log(res);
+          // setStatusListInvoice(false);
+          setListInvoice(res.data.invoiceDetails);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
 
     if (action == 0 && !props.invoice._id) {
       setInvoice(initData);
       setTitle("Thêm Đơn Nhập");
+      setListInvoice([]);
 
       // if (actionSub == undefined) {
       //   setNote("");
@@ -159,9 +175,9 @@ const InvoiceModal = (props) => {
   useEffect(() => {
     setIsLoading(false);
 
-    if (actionSub == -1) {
-      // setInvoice({ ...invoice, note: note });
-    }
+    // if (actionSub == -1) {
+    // setInvoice({ ...invoice, note: note });
+    // }
   }, [actionSub]);
 
   useEffect(() => {
@@ -223,7 +239,9 @@ const InvoiceModal = (props) => {
             </>
           )}
           <div className="g-col-12 form-group">
-            {invoiceDetails && invoiceDetails.length > 0 && (
+            {(action == 0
+              ? invoiceDetails && invoiceDetails.length > 0
+              : listInvoice && listInvoice.length > 0) && (
               <div>
                 <label className="form-label italic">
                   Danh sách sản phẩm chọn để nhập (*)
@@ -247,77 +265,82 @@ const InvoiceModal = (props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {invoiceDetails.map((invoiceDetail, index) => (
-                        <tr className="intro-x" key={index}>
-                          <td className="w-20 text-center">
-                            {/* {(page - 1) * pageSize + index + 1} */}
-                            {index + 1}
-                          </td>
+                      {(action == 0 ? invoiceDetails : listInvoice).map(
+                        (invoiceDetail, index) => (
+                          <tr className="intro-x" key={index}>
+                            <td className="w-20 text-center">
+                              {/* {(page - 1) * pageSize + index + 1} */}
+                              {index + 1}
+                            </td>
 
-                          <td>
-                            <a
-                              href={undefined}
-                              className="font-medium whitespace-nowrap"
-                            >
-                              {invoiceDetail.product?.productName}
-                            </a>
-                            <div
-                              className="text-slate-500 text-xs whitespace-nowrap mt-0.5
+                            <td>
+                              <a
+                                href={undefined}
+                                className="font-medium whitespace-nowrap"
+                              >
+                                {invoiceDetail.product?.productName}
+                              </a>
+                              <div
+                                className="text-slate-500 text-xs whitespace-nowrap mt-0.5
                             flex items-center"
-                            >
-                              <span
-                                className="color-group__item-sm"
-                                style={{ background: invoiceDetail.color?.hex }}
-                              ></span>
-                              {invoiceDetail.color?.colorName}/
-                              {invoiceDetail.size?.sizeName}/x
-                              {invoiceDetail.quantity}/
-                              {Number(
-                                invoiceDetail.priceImport
-                              ).toLocaleString()}{" "}
-                              VND
-                            </div>
-                          </td>
-
-                          {action == 0 && (
-                            <td className="table-report__action w-56">
-                              <div className="flex justify-center items-center">
-                                <a
-                                  className="flex items-center mr-3"
-                                  href={undefined}
-                                  onClick={() => {
-                                    props.handleShowOverlap(
-                                      invoiceDetail,
-                                      1,
-                                      [0, 1],
-                                      2
-                                    );
+                              >
+                                <span
+                                  className="color-group__item-sm"
+                                  style={{
+                                    background: invoiceDetail.color?.hex,
                                   }}
-                                >
-                                  <i className="uil uil-edit"></i>
-                                </a>
-                                <a
-                                  className="flex items-center text-danger"
-                                  href={undefined}
-                                  data-tw-toggle="modal"
-                                  data-tw-target="#delete-confirmation-modal"
-                                  onClick={() =>
-                                    deleteInvoiceDetail(invoiceDetail)
-                                  }
-                                >
-                                  <i className="uil uil-trash"></i>
-                                </a>
+                                ></span>
+                                {invoiceDetail.color?.colorName}/
+                                {invoiceDetail.size?.sizeName}/x
+                                {invoiceDetail.quantity}/
+                                {Number(
+                                  invoiceDetail.priceImport
+                                ).toLocaleString()}{" "}
+                                VND
                               </div>
                             </td>
-                          )}
-                        </tr>
-                      ))}
+
+                            {action == 0 && (
+                              <td className="table-report__action w-56">
+                                <div className="flex justify-center items-center">
+                                  <a
+                                    className="flex items-center mr-3"
+                                    href={undefined}
+                                    onClick={() => {
+                                      props.handleShowOverlap(
+                                        invoiceDetail,
+                                        1,
+                                        [0, 1],
+                                        2
+                                      );
+                                    }}
+                                  >
+                                    <i className="uil uil-edit"></i>
+                                  </a>
+                                  <a
+                                    className="flex items-center text-danger"
+                                    href={undefined}
+                                    data-tw-toggle="modal"
+                                    data-tw-target="#delete-confirmation-modal"
+                                    onClick={() =>
+                                      deleteInvoiceDetail(invoiceDetail)
+                                    }
+                                  >
+                                    <i className="uil uil-trash"></i>
+                                  </a>
+                                </div>
+                              </td>
+                            )}
+                          </tr>
+                        )
+                      )}
                     </tbody>
                   </table>
                 </div>
               </div>
             )}
           </div>
+
           <hr className="my-5" />
           <div className="g-col-12 form-group">
             <label className="form-label italic">Thông tin đơn nhập (*)</label>

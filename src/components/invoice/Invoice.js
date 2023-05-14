@@ -41,8 +41,12 @@ const Invoice = () => {
 
   const handleShow = async (action, show, id, type = [0]) => {
     const data = id ? await getInvoice(id) : {};
+
     if (action == 0) setInvoiceDetails([]);
-    if (action == 1) setInvoiceDetails(data.invoiceDetails);
+    if (action == 1) {
+      setInvoiceDetails(data.invoiceDetails);
+    }
+
     setInvoice(data);
     setAction(action);
     setShow(show);
@@ -81,8 +85,6 @@ const Invoice = () => {
   };
 
   const createInvoice = (invoice) => {
-    setIsLoading(false);
-
     InvoiceService.create(invoice)
       .then((res) => {
         setInvoices([res.data, ...invoices]);
