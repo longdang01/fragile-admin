@@ -11,7 +11,8 @@ import UserService from "./services/user.service";
 
 const jwtInterceptor = axios.create({
   // baseURL: "http://localhost:5000/api",
-  baseURL: "https://fragile-backend.onrender.com/api",
+  // baseURL: "https://fragile-backend.onrender.com/api",
+  baseURL: "https://rose-busy-penguin.cyclic.app/api",
   headers: {
     "Content-Type": "application/json",
   },
