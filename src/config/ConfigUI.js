@@ -12,6 +12,8 @@ const configToast = {
 };
 
 const configSelectStyle = {
+  menu: (provided) => ({ ...provided, zIndex: 9999 }),
+
   control: (base) => ({
     ...base,
     // border: 0,
